@@ -303,6 +303,39 @@ body {
         font-size: 11px;
     }
 
+    /* 横画面(Landscape)の時の大革命レイアウト！！ */
+    @media (orientation: landscape) {
+        .kamishibai-content, .clear-content {
+            flex-direction: row !important; /* 横並び！！ */
+            width: 98vw;
+            max-width: none;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .kamishibai-image-container, .package-container {
+            width: 45vw !important;
+            height: 80vh !important;
+            flex: none;
+        }
+
+        .kamishibai-text-box, .btn-group {
+            width: 45vw !important;
+            height: auto;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .glow-text {
+            font-size: 1.5rem;
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            left: 0;
+        }
+    }
+
     /* クリア画面のパッケージを小さくしてボタンを救出するぜ！！ */
     .package-container {
         width: 140px;
@@ -337,12 +370,12 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9); /* 重なりを防ぐためにもっと暗く、不透明にするぜ！！ */
-    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.98); /* 重なりを防ぐためにもうほぼ真っ黒にするぜ！！ */
+    backdrop-filter: blur(15px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    z-index: 1000; /* 最前面に！！ */
     animation: fadeIn 0.3s ease;
 }
 
