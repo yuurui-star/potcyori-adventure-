@@ -247,6 +247,63 @@ body {
     border: 1px solid rgba(255,255,255,0.2);
 }
 
+@media screen and (max-width: 850px) {
+    /* スマホ時はガイドを消してスッキリさせるぜ！！ */
+    #wm-guide {
+        display: none !important;
+    }
+    
+    #wm-title {
+        font-size: 2rem;
+        margin-top: -20px;
+    }
+
+    /* ダイアログをスリムにして後ろを透かす！！ */
+    #dialogue-container {
+        top: 65px;
+        padding: 8px 15px;
+        background: rgba(22, 33, 62, 0.7); /* 透明度アップ！ */
+    }
+
+    #dialogue-text {
+        font-size: 0.95rem;
+        min-height: 2.5em;
+    }
+
+    .character-name {
+        top: -12px;
+        padding: 1px 10px;
+        font-size: 0.8rem;
+    }
+
+    /* HUDも小型化して邪魔しないようにする */
+    .hud-item {
+        padding: 5px 12px;
+        font-size: 0.85rem;
+    }
+    
+    #hud {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+    }
+
+    /* コントローラーをもっと透けさせる！！ */
+    .m-btn {
+        width: 55px;
+        height: 55px;
+        background: rgba(233, 69, 96, 0.4);
+        border-width: 1px;
+        font-size: 18px;
+    }
+    
+    .m-btn.secondary {
+        width: 55px;
+        height: 55px;
+        font-size: 11px;
+    }
+}
+
 
 /* ポーズオーバーレイ */
 #pause-overlay {
