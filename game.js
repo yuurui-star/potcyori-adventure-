@@ -973,7 +973,9 @@ class PlayScene extends Phaser.Scene {
         document.getElementById('total-chips').innerText = this.chipsTotal;
         if (this.player) {
             this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
-            this.cameras.main.setZoom(1.5);
+            // スマホや小さい画面の時はカメラを少し引いて、フィールドを広く見せるぜ！！
+            const zoomLevel = window.innerWidth < 850 ? 1.2 : 1.5;
+            this.cameras.main.setZoom(zoomLevel);
         }
 
         this.physics.add.collider(this.player, this.platforms, (p, obj) => {
