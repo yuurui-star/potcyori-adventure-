@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PotCyoriAdventure</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
+    <script src="map_data.js"></script>
+    <script src="stage_data.js"></script>
+    <script src="dialogue_data.js"></script>
+</head>
+<body>
+    <div id="game-wrapper">
+        <div id="brand-splash" class="overlay hidden">
+            <div class="brand-container">
+                <img id="brand-logo" src="assets/title_logo.png" alt="Brand Logo">
+                <p style="color: #fff; font-size: 1.2rem; letter-spacing: 5px; margin-top: 20px;">天下布舞ゲーム制作project</p>
+            </div>
+        </div>
+        <!-- タイトルスプラッシュ画面 -->
+    <div id="title-splash" class="overlay hidden">
+        <div class="title-container">
+            <img id="title-logo" src="" alt="Title Logo">
+            <div class="mode-selection">
+                <button id="start-normal-btn" class="menu-btn normal">ADVENTURE START</button>
+                <button id="start-ta-btn" class="menu-btn ta">TIME ATTACK MODE</button>
+            </div>
+            <p class="click-to-start" style="margin-top: 20px;">CHOOSE YOUR CHALLENGE</p>
+        </div>
+    </div>
+
+
+    <!-- オープニング紙芝居 -->
+        <div id="opening-overlay" class="overlay hidden">
+            <div class="kamishibai-content">
+                <div class="kamishibai-image-container">
+                    <img id="opening-img" src="" alt="Opening">
+                </div>
+                <div class="kamishibai-text-box">
+                    <p id="opening-text"></p>
+                    <div class="btn-group">
+                        <button id="opening-next-btn">次へ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- エンディング紙芝居 -->
+        <div id="ending-overlay" class="overlay hidden">
+            <div class="kamishibai-content">
+                <div class="kamishibai-image-container">
+                    <img id="ending-img" src="" alt="Ending">
+                </div>
+                <div class="kamishibai-text-box">
+                    <p id="ending-text"></p>
+                    <div class="btn-group">
+                        <button id="ending-close-btn">タイトルへ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ステージクリア（パッケージ完成） -->
+        <div id="clear-overlay" class="overlay hidden">
+            <div class="clear-content">
+                <h2 class="glow-text">STAGE COMPLETE!</h2>
+                <div class="package-container">
+                    <img id="completed-package" src="" alt="Completed Package">
+                </div>
+                <p id="clear-message">伝説のパッケージが完成したわ！</p>
+                <div class="btn-group">
+                    <button id="next-stage-btn">次のステージへ</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="game-container"></div>
+        
+        <!-- ダイアログシステム -->
+        <div id="dialogue-container" class="hidden">
+            <div id="dialogue-speaker" class="character-name">Cyori</div>
+            <div id="dialogue-text"></div>
+            <div class="dialogue-arrow">▼</div>
+        </div>
+
+        <!-- ポーズ画面 -->
+        <div id="pause-overlay" class="hidden">
+            <div class="pause-content">
+                <h2>PAUSE</h2>
+                <div class="pause-divider"></div>
+                <p>Press <span class="key">P</span> to Resume</p>
+                <div class="btn-group" style="margin-top: 20px;">
+                    <button id="resume-btn">再開する</button>
+                    <button id="pause-worldmap-btn" style="background: #4a4e69;">ワールドMapへ戻る</button>
+                    <button id="pause-exit-btn" style="background: #333;">タイトルへ戻る</button>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- HUD -->
+        <div id="hud">
+            <div class="hud-item">
+                <img id="hud-chip-icon" class="hud-icon" src="" alt="Chip">
+                <span id="chips-count">0</span> / <span id="total-chips">0</span>
+            </div>
+            <div id="ta-timer-panel" class="hud-item hidden" style="border-color: #ff4d4d; color: #ff4d4d;">
+                TIME: <span id="ta-timer">00:00.00</span>
+            </div>
+            <div style="display: flex; gap: 10px; pointer-events: auto;">
+
+                <div class="hud-item stage-info">
+                    Stage: <span id="current-stage">1</span>
+                </div>
+                <div id="btn-pause" class="hud-item pause-trigger">
+                    <span style="font-size: 1.2rem;">II</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- モバイル用コントロール -->
+        <div id="mobile-controls">
+            <div class="control-group left-controls">
+                <button id="btn-left" class="m-btn">◀</button>
+                <button id="btn-right" class="m-btn">▶</button>
+            </div>
+            <div class="control-group right-controls">
+                <button id="btn-dash" class="m-btn secondary">DASH</button>
+                <button id="btn-jump" class="m-btn">JUMP</button>
+            </div>
+        </div>
+        <!-- ワールドマップ専用UI (HTML) -->
+        <div id="wm-ui" class="hidden">
+            <h1 id="wm-title">WORLD MAP</h1>
+            <div id="wm-guide">WASD・方向キーで移動 / Space・DASHボタンで開始</div>
+        </div>
+    </div>
+
+
+
+    <script src="game.js?v=639131026254194904"></script>
+</body>
+</html>
