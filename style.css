@@ -260,14 +260,14 @@ body {
 
     /* ダイアログをスリムにして後ろを透かす！！ */
     #dialogue-container {
-        top: 65px;
-        padding: 8px 15px;
-        background: rgba(22, 33, 62, 0.7); /* 透明度アップ！ */
+        top: 45px; /* さらに上に！！ */
+        padding: 5px 15px; /* 極限スリム化 */
+        background: rgba(22, 33, 62, 0.7);
     }
 
     #dialogue-text {
-        font-size: 0.95rem;
-        min-height: 2.5em;
+        font-size: 0.9rem;
+        min-height: 2em; /* 高さを抑える！！ */
     }
 
     .character-name {
@@ -311,12 +311,12 @@ body {
             max-width: none;
             justify-content: space-around;
             align-items: center;
-            padding: 10px;
+            padding: 20px 10px 10px 10px; /* 上に少し隙間を！！ */
         }
 
         .kamishibai-image-container, .package-container {
-            width: 45vw !important;
-            height: 80vh !important;
+            width: 35vw !important; /* イラストを少し控えめにして文字を救出！！ */
+            height: 70vh !important;
             flex: none;
         }
 
@@ -330,9 +330,11 @@ body {
         .glow-text {
             font-size: 1.5rem;
             position: absolute;
-            top: 10px;
+            top: 5px;
             width: 100%;
             left: 0;
+            text-align: center;
+            z-index: 50;
         }
     }
 
