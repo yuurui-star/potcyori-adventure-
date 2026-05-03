@@ -19,6 +19,9 @@ body {
     height: 100vh;
     font-family: 'Outfit', 'Noto Sans JP', sans-serif;
     color: var(--text-color);
+    text-rendering: optimizeLegibility; /* 文字を綺麗にする！！ */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 #game-wrapper {
@@ -314,40 +317,46 @@ body {
     /* 横画面(Landscape)の時の大革命レイアウト！！ */
     @media (orientation: landscape) {
         .kamishibai-content, .clear-content {
-            flex-direction: row !important; /* 横並び！！ */
-            width: 98vw;
-            max-width: none;
-            justify-content: space-around;
-            align-items: center;
-            padding: 30px 10px 10px 10px; /* 上にさらに隙間を！！ */
+            display: grid !important; /* Gridで物理的に分けるぜ！！ */
+            grid-template-columns: 40% 60%;
+            grid-template-rows: auto 1fr;
+            width: 100vw;
+            height: 100vh;
+            padding: 40px 20px 20px 20px;
+            box-sizing: border-box;
+            gap: 20px;
+        }
+
+        .glow-text {
+            grid-column: 1 / span 2; /* タイトルは一番上を独占！！ */
+            font-size: 1.8rem;
+            position: static;
+            margin: 0 auto 10px auto;
+            z-index: 100;
         }
 
         .kamishibai-image-container, .package-container {
-            width: 30vw !important; /* イラストをさらにスリムにして文字を救出！！ */
-            height: 60vh !important;
-            flex: none;
+            grid-column: 1;
+            grid-row: 2;
+            width: 100% !important;
+            height: 100% !important;
+            max-height: 65vh !important;
             margin: 0 !important;
         }
 
         .kamishibai-text-box, .btn-group {
-            width: 50vw !important;
-            height: auto;
-            max-height: 80vh;
+            grid-column: 2;
+            grid-row: 2;
+            width: 100% !important;
+            height: 100% !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(22, 33, 62, 0.6);
+            padding: 20px;
+            border-radius: 20px;
             overflow-y: auto;
-            background: rgba(22, 33, 62, 0.5); /* 視認性向上のための薄い背景 */
-            padding: 15px;
-            border-radius: 15px;
-        }
-
-        .glow-text {
-            font-size: 1.8rem;
-            position: absolute;
-            top: 5px;
-            width: 100%;
-            left: 0;
-            text-align: center;
-            z-index: 100; /* 最前面に！！ */
-            text-shadow: 0 0 15px var(--primary), 2px 2px 5px #000; /* 読みやすく！！ */
         }
     }
 

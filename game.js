@@ -1219,19 +1219,21 @@ class PlayScene extends Phaser.Scene {
 function initGame() {
     if (phaserGame) return;
     const config = {
-        type: Phaser.CANVAS,
+        type: Phaser.AUTO, // WebGL優先で高画質に！！
         parent: 'game-container',
         scale: {
-            mode: Phaser.Scale.RESIZE,
-            width: '100%',
-            height: '100%'
+            mode: Phaser.Scale.FIT, // スマホの画面に完璧に合わせる
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+            width: window.innerWidth * window.devicePixelRatio,
+            height: window.innerHeight * window.devicePixelRatio,
         },
-
-
         physics: { default: 'arcade', arcade: { gravity: { y: 1400 }, debug: false } },
-        render: { pixelArt: true, antialias: false, roundPixels: true },
+        render: { 
+            pixelArt: true, // キャラはドットを活かす！！
+            antialias: true, // 文字の歪みを防ぐ！！
+            roundPixels: true 
+        },
         scene: [BootScene, WorldMapScene, PlayScene]
-
     };
     phaserGame = new Phaser.Game(config);
 }
