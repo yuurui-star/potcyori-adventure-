@@ -54,16 +54,22 @@ body {
     top: 80px; /* 上部に移動 */
     left: 50%;
     transform: translateX(-50%);
-    width: 90%;
+    width: auto; /* 文字数に合わせて伸縮！！ */
+    min-width: 200px;
+    max-width: 85%; /* 広がりすぎ防止 */
     background: var(--panel-bg);
     backdrop-filter: blur(12px);
     border: 2px solid var(--primary);
     border-radius: 15px;
-    padding: 15px 20px; /* 少しスリムに */
+    padding: 15px 30px; /* 左右に少し余裕を！！ */
     box-sizing: border-box;
-    z-index: 10;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000; /* HUD(10)より確実に前面に！！ */
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 中のテキストも中央に！！ */
+    text-align: center;
 }
 
 #dialogue-container.hidden {
@@ -261,8 +267,10 @@ body {
     /* ダイアログをスリムにして後ろを透かす！！ */
     #dialogue-container {
         top: 45px; /* さらに上に！！ */
-        padding: 5px 15px; /* 極限スリム化 */
+        padding: 5px 20px; /* 極限スリム化 */
         background: rgba(22, 33, 62, 0.7);
+        width: auto;
+        max-width: 90%; /* スマホ時は少し広めに！！ */
     }
 
     #dialogue-text {
@@ -311,30 +319,35 @@ body {
             max-width: none;
             justify-content: space-around;
             align-items: center;
-            padding: 20px 10px 10px 10px; /* 上に少し隙間を！！ */
+            padding: 30px 10px 10px 10px; /* 上にさらに隙間を！！ */
         }
 
         .kamishibai-image-container, .package-container {
-            width: 35vw !important; /* イラストを少し控えめにして文字を救出！！ */
-            height: 70vh !important;
+            width: 30vw !important; /* イラストをさらにスリムにして文字を救出！！ */
+            height: 60vh !important;
             flex: none;
+            margin: 0 !important;
         }
 
         .kamishibai-text-box, .btn-group {
-            width: 45vw !important;
+            width: 50vw !important;
             height: auto;
             max-height: 80vh;
             overflow-y: auto;
+            background: rgba(22, 33, 62, 0.5); /* 視認性向上のための薄い背景 */
+            padding: 15px;
+            border-radius: 15px;
         }
 
         .glow-text {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             position: absolute;
             top: 5px;
             width: 100%;
             left: 0;
             text-align: center;
-            z-index: 50;
+            z-index: 100; /* 最前面に！！ */
+            text-shadow: 0 0 15px var(--primary), 2px 2px 5px #000; /* 読みやすく！！ */
         }
     }
 

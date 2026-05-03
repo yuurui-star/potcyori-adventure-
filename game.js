@@ -849,8 +849,9 @@ class PlayScene extends Phaser.Scene {
         const bgKey = `bg_stage${sNumInt}`;
         if (this.textures.exists(bgKey)) {
             const bg = this.add.image(width / 2, height / 2, bgKey).setOrigin(0.5, 0.5).setScrollFactor(0);
-            const scaleX = width / bg.width;
-            bg.setScale(scaleX); // 横幅優先でフィット！！
+            // ズームを引いても端が見えないよう、画面サイズに対して少し余裕を持ってスケーリングするぜ！！
+            const scale = Math.max(width / bg.width, height / bg.height) / 0.8; 
+            bg.setScale(scale);
         } else {
 
             this.add.rectangle(worldWidth/2, height / 2, worldWidth, height, 0x87ceeb).setScrollFactor(0.5);
@@ -1016,7 +1017,7 @@ class PlayScene extends Phaser.Scene {
                         if (this.goal) { 
                             this.goal.setAlpha(1); // ゴールを実体化
                             this.tweens.add({ targets: this.goal, scaleX: 1.2, scaleY: 1.2, duration: 200, yoyo: true }); // キラリと光る演出
-                            showDialogue("よっしゃ！ポテチの完成や！"); 
+                            showDialogue("や～っと終わったぁ、何がしたかったんやろ？"); 
                         }
                     }
                 } else {
@@ -1155,7 +1156,6 @@ class PlayScene extends Phaser.Scene {
         this.player.body.setAllowRotation(false);
         if ((this.cursors.up.isDown || this.wasd.W.isDown || mobileInput.jump) && (this.player.body.touching.down || this.player.body.blocked.down)) {
             this.player.setVelocityY(currentStageId === "stage5" ? -450 : -640);
-            if (Math.random() < 0.1) showDialogue("ジャンプ！");
         }
         this.dialogueQueue.forEach(d => { 
             if (!d.played && this.player.x >= d.x) { 
