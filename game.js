@@ -691,11 +691,10 @@ class WorldMapScene extends Phaser.Scene {
 
         this.mapPlayer.isMoving = false;
         
-        // カメラ設定: ズームと追従を廃止し、世界全体を一望できるパノラマ・ビューに固定！！
+        // カメラ設定: 高解像度ディスプレイに合わせてズームを少し上げるぜ！！
         this.cameras.main.setBounds(0, 0, width, height);
         this.cameras.main.setScroll(0, 0); 
-        // ズームは 1.0 (等倍) に戻す
-        this.cameras.main.setZoom(1.0);
+        this.cameras.main.setZoom(1.2); /* マップも少しズームアップ！！ */
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -974,8 +973,8 @@ class PlayScene extends Phaser.Scene {
         document.getElementById('total-chips').innerText = this.chipsTotal;
         if (this.player) {
             this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
-            // スマホや小さい画面の時はカメラをパノラマビュー(0.8)にして、世界を一望させるぜ！！
-            const zoomLevel = window.innerWidth < 850 ? 0.8 : 1.5;
+            // 高解像度対応に伴い、ズームを1.25倍に引き上げて、ちょりの勇姿をハッキリ見せるぜ！！
+            const zoomLevel = window.innerWidth < 850 ? 1.25 : 1.5;
             this.cameras.main.setZoom(zoomLevel);
         }
 

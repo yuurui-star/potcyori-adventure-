@@ -317,21 +317,23 @@ body {
     /* 横画面(Landscape)の時の大革命レイアウト！！ */
     @media (orientation: landscape) {
         .kamishibai-content, .clear-content {
-            display: grid !important; /* Gridで物理的に分けるぜ！！ */
-            grid-template-columns: 40% 60%;
-            grid-template-rows: auto 1fr;
+            display: grid !important;
+            grid-template-columns: 45% 55%;
+            grid-template-rows: 60px 1fr; /* 文字エリアを60pxで固定して被りを防止！！ */
             width: 100vw;
             height: 100vh;
-            padding: 40px 20px 20px 20px;
+            padding: 20px;
             box-sizing: border-box;
-            gap: 20px;
+            gap: 15px;
         }
 
         .glow-text {
-            grid-column: 1 / span 2; /* タイトルは一番上を独占！！ */
+            grid-column: 1 / span 2;
+            grid-row: 1; /* 1行目に固定！！ */
             font-size: 1.8rem;
             position: static;
-            margin: 0 auto 10px auto;
+            margin: 0 auto;
+            align-self: center;
             z-index: 100;
         }
 
