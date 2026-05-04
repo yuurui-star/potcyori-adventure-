@@ -1,6 +1,6 @@
 :root {
-    --primary: #e94560;
-    --bg-dark: #1a1a2e;
+    --primary: #f82a62;
+    --bg-dark: #000; /* 真の黒へ！！ */
     --panel-bg: rgba(22, 33, 62, 0.85);
     --text-color: #ffffff;
 }
@@ -355,11 +355,22 @@ body {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: rgba(22, 33, 62, 0.6);
+            background: rgba(10, 10, 26, 0.8); /* 少し濃くして鮮やかに！！ */
             padding: 20px;
             border-radius: 20px;
             overflow-y: auto;
+            border: 2px solid var(--primary); /* 枠線で引き締める！！ */
         }
+    }
+
+    /* タイムアタック結果のスタイル！！ */
+    .ta-time-result {
+        font-family: 'Outfit', sans-serif;
+        font-size: 2rem;
+        color: #00f2fe; /* サイバーな青！！ */
+        text-shadow: 0 0 15px rgba(0, 242, 254, 0.8);
+        margin: 15px 0;
+        font-weight: bold;
     }
 
     /* クリア画面のパッケージを小さくしてボタンを救出するぜ！！ */

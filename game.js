@@ -279,16 +279,17 @@ function showClearScreen(bagKey, scene) {
     overlay.classList.remove('hidden');
     
     const taPanel = document.getElementById('total-ta-time');
+    const msg = document.getElementById('clear-message');
     if (isTimeAttack && currentStageId === "stage5") {
+        const timeStr = formatTime(taElapsedTime);
         if (!taPanel) {
-            const timeStr = formatTime(taElapsedTime);
-            const msg = document.getElementById('clear-message');
             const timeEl = document.createElement('div');
             timeEl.id = 'total-ta-time';
+            timeEl.className = 'ta-time-result'; // クラスを付けてCSSで制御！！
             timeEl.innerText = `TOTAL TIME: ${timeStr}`;
             msg.parentNode.insertBefore(timeEl, msg.nextSibling);
         } else {
-            taPanel.innerText = `TOTAL TIME: ${formatTime(taElapsedTime)}`;
+            taPanel.innerText = `TOTAL TIME: ${timeStr}`;
             taPanel.classList.remove('hidden');
         }
     } else if (taPanel) {
@@ -691,10 +692,10 @@ class WorldMapScene extends Phaser.Scene {
 
         this.mapPlayer.isMoving = false;
         
-        // カメラ設定: 高解像度ディスプレイに合わせてズームを少し上げるぜ！！
+        // カメラ設定: マップ中央にフォーカスし、見切れを防止するぜ！！
         this.cameras.main.setBounds(0, 0, width, height);
-        this.cameras.main.setScroll(0, 0); 
-        this.cameras.main.setZoom(1.2); /* マップも少しズームアップ！！ */
+        this.cameras.main.centerOn(width / 2, height / 2); // ど真ん中に固定！！
+        this.cameras.main.setZoom(1.25); /* 迫力と全体像を両立させる 1.25倍！！ */
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -972,7 +973,8 @@ class PlayScene extends Phaser.Scene {
         this.chipsTotal = this.chips.getChildren().length;
         document.getElementById('total-chips').innerText = this.chipsTotal;
         if (this.player) {
-            this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
+            // ちょりがスマホのボタンに隠れないよう、カメラの注視点を少し上(-50)にずらすぜ！！
+            this.cameras.main.startFollow(this.player, true, 0.1, 0.1, 0, -50);
             // 高解像度対応に伴い、ズームを1.25倍に引き上げて、ちょりの勇姿をハッキリ見せるぜ！！
             const zoomLevel = window.innerWidth < 850 ? 1.25 : 1.5;
             this.cameras.main.setZoom(zoomLevel);
