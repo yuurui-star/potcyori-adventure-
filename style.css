@@ -407,26 +407,28 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.98); /* 重なりを防ぐためにもうほぼ真っ黒にするぜ！！ */
+    background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(15px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* 最前面に！！ */
+    z-index: 2000; /* ダイアログ(1000)より前面に！！ */
     animation: fadeIn 0.3s ease;
 }
 
 .pause-content {
     text-align: center;
     background: var(--panel-bg);
-    padding: 40px 60px;
+    padding: 20px 40px; /* 少しスリム化 */
     border-radius: 20px;
     border: 2px solid var(--primary);
-    box-shadow: 0 0 50px rgba(233, 69, 96, 0.3);
+    box-shadow: 0 0 50px rgba(248, 42, 98, 0.4);
+    width: 90%;
+    max-width: 500px;
 }
 
 .pause-content h2 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin: 0;
     color: var(--primary);
     letter-spacing: 10px;
@@ -435,7 +437,18 @@ body {
 .pause-divider {
     height: 2px;
     background: linear-gradient(90deg, transparent, var(--primary), transparent);
-    margin: 20px 0;
+    margin: 10px 0 15px 0;
+}
+
+.pause-content .btn-group {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#resume-btn {
+    grid-column: 1 / span 2; /* 「再開する」は大きく！！ */
 }
 
 .key {
@@ -444,6 +457,14 @@ body {
     border-radius: 5px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     font-family: monospace;
+}
+
+/* スマホ横画面時はさらにボタンをスリムにして見切れを防ぐぜ！！ */
+@media (orientation: landscape) and (max-height: 500px) {
+    .pause-content { padding: 10px 30px; }
+    .pause-content h2 { font-size: 1.8rem; }
+    .pause-content .btn-group { gap: 10px; margin-top: 10px; }
+    .pause-divider { margin: 5px 0 10px 0; }
 }
 
 .pause-hint {

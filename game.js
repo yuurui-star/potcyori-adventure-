@@ -973,8 +973,8 @@ class PlayScene extends Phaser.Scene {
         this.chipsTotal = this.chips.getChildren().length;
         document.getElementById('total-chips').innerText = this.chipsTotal;
         if (this.player) {
-            // ちょりがスマホのボタンに隠れないよう、カメラの注視点を少し上(-50)にずらすぜ！！
-            this.cameras.main.startFollow(this.player, true, 0.1, 0.1, 0, -50);
+            // ちょりがスマホのボタンに隠れないよう、カメラの注視点を大幅に上(-120)にずらすぜ！！
+            this.cameras.main.startFollow(this.player, true, 0.1, 0.1, 0, -120);
             // 高解像度対応に伴い、ズームを1.25倍に引き上げて、ちょりの勇姿をハッキリ見せるぜ！！
             const zoomLevel = window.innerWidth < 850 ? 1.25 : 1.5;
             this.cameras.main.setZoom(zoomLevel);
