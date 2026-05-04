@@ -1082,6 +1082,7 @@ class PlayScene extends Phaser.Scene {
         });
         this.cursors = this.input.keyboard.createCursorKeys();
         this.wasd = this.input.keyboard.addKeys('W,A,S,D');
+        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE); // スペースキー追加！！
         this.dashKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         this.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
@@ -1155,7 +1156,7 @@ class PlayScene extends Phaser.Scene {
         else { if (this.player.anims.currentAnim?.key !== 'idle') this.player.play('idle'); }
         this.player.angle = 0;
         this.player.body.setAllowRotation(false);
-        if ((this.cursors.up.isDown || this.wasd.W.isDown || mobileInput.jump) && (this.player.body.touching.down || this.player.body.blocked.down)) {
+        if ((this.cursors.up.isDown || this.wasd.W.isDown || this.spaceKey.isDown || mobileInput.jump) && (this.player.body.touching.down || this.player.body.blocked.down)) {
             this.player.setVelocityY(currentStageId === "stage5" ? -450 : -640);
         }
         this.dialogueQueue.forEach(d => { 
