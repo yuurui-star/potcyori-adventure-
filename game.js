@@ -891,7 +891,9 @@ class PlayScene extends Phaser.Scene {
             f.generateTexture('flag', 68, 120);
         }
         if (currentStageId === "stage5") this.physics.world.gravity.y = 800; // ボス戦用に少し軽く
-        else this.physics.world.gravity.y = 1400;
+        else this.physics.world.gravity.y = 1500;
+        this.sound.volume = globalVolume; // 保存された音量を適用！！
+        window.gameInstance = this; // 音量制御のためにインスタンスを晒すぜ！！
         
         this.projectiles = this.physics.add.group();
         this.boss = null;
@@ -1221,6 +1223,25 @@ class PlayScene extends Phaser.Scene {
         if (this.player.y > 800 && !this.isGameOver) { this.isGameOver = true; this.physics.pause(); showDialogue("落ちた！"); setTimeout(() => this.scene.restart(), 1000); }
     }
 }
+
+// --- 音量管理システム ---
+let globalVolume = parseFloat(localStorage.getItem('potcyori_volume')) || 0.5;
+
+function initVolumeControl() {
+    const slider = document.getElementById('volume-slider');
+    if (slider) {
+        slider.value = globalVolume;
+        slider.addEventListener('input', (e) => {
+            globalVolume = parseFloat(e.target.value);
+            localStorage.setItem('potcyori_volume', globalVolume);
+            if (window.gameInstance && window.gameInstance.sound) {
+                window.gameInstance.sound.volume = globalVolume;
+            }
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initVolumeControl);
 
 function initGame() {
     if (phaserGame) return;

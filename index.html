@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PotCyoriAdventure</title>
     <link rel="icon" href="assets/favicon.png" type="image/png">
-    <link rel="stylesheet" href="style.css?v=20240504_ui_master_edition">
+    <link rel="stylesheet" href="style.css?v=20240504_volume_control_final">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
     <script src="map_data.js"></script>
@@ -27,6 +27,10 @@
             <div class="mode-selection">
                 <button id="start-normal-btn" class="menu-btn normal">ADVENTURE START</button>
                 <button id="start-ta-btn" class="menu-btn ta">TIME ATTACK MODE</button>
+            </div>
+            <div class="volume-settings">
+                <span class="volume-label">BGM VOLUME</span>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
             </div>
             <p class="click-to-start" style="margin-top: 20px;">CHOOSE YOUR CHALLENGE</p>
         </div>
@@ -141,6 +145,6 @@
 
 
 
-    <script src="game.js?v=20240504_ui_master_edition"></script>
+    <script src="game.js?v=20240504_volume_control_final"></script>
 </body>
 </html>
