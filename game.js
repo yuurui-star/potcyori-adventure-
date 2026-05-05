@@ -973,11 +973,15 @@ class PlayScene extends Phaser.Scene {
         this.chipsTotal = this.chips.getChildren().length;
         document.getElementById('total-chips').innerText = this.chipsTotal;
         if (this.player) {
-            // ちょりがスマホのボタンに隠れないよう、カメラの注視点を大幅に上(-120)にずらすぜ！！
-            this.cameras.main.startFollow(this.player, true, 0.1, 0.1, 0, -120);
+            // ステージ開始時からプレイヤーを画面中央（かつボタンを避ける高さ）に固定するぜ！！
+            this.cameras.main.startFollow(this.player, true, 0.1, 0.1, 0, -100);
+            
             // 高解像度対応に伴い、ズームを1.25倍に引き上げて、ちょりの勇姿をハッキリ見せるぜ！！
             const zoomLevel = window.innerWidth < 850 ? 1.25 : 1.5;
             this.cameras.main.setZoom(zoomLevel);
+            
+            // 開始直後のカメラ位置を強制的にプレイヤーに合わせる（左端待機を廃止！！）
+            this.cameras.main.centerOn(this.player.x, this.player.y - 100);
         }
 
         this.physics.add.collider(this.player, this.platforms, (p, obj) => {
