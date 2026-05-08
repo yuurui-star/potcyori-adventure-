@@ -666,13 +666,16 @@ class WorldMapScene extends Phaser.Scene {
             const container = this.add.container(node.renderX, node.renderY);
             const bagKey = node.bag;
             const bag = this.add.image(0, 0, this.textures.exists(bagKey) ? bagKey : 'block').setDisplaySize(60, 80);
+            // 文字のぼやけ（ガビガビ）を解消する「高解像度レンダリング技法」！！
+            // 内部的に2倍のサイズ（32px）で超綺麗に描画してから、画面上で半分（16px）に縮小するぜ！
             const label = this.add.text(0, 50, node.label, { 
-                font: 'bold 16px Noto Sans JP', 
+                font: 'bold 32px Noto Sans JP', // 16px → 32px に倍増
                 fill: '#ffffff',
                 stroke: '#000000',
-                strokeThickness: 4,
-                shadow: { offsetX: 2, offsetY: 2, color: '#000000', blur: 2, stroke: true, fill: true }
-            }).setOrigin(0.5);
+                strokeThickness: 8, // フチドリも倍増
+                shadow: { offsetX: 4, offsetY: 4, color: '#000000', blur: 4, stroke: true, fill: true }, // 影も倍増
+                resolution: window.devicePixelRatio || 2 // ブラウザのピクセル密度に強制適応！！
+            }).setOrigin(0.5).setScale(0.5); // 最後に 0.5 倍にキュッと縮めることで、最強のクッキリ文字になる！！
 
             container.add([bag, label]);
             const progress = stageProgress[node.id];
