@@ -12,24 +12,36 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: var(--bg-dark);
+    /* ゲームコンソール風のベゼル背景（ドット柄） */
+    background-color: #111118;
+    background-image: radial-gradient(circle, #2a2a3a 10%, transparent 10%), radial-gradient(circle, #2a2a3a 10%, transparent 10%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 100vw;
     font-family: 'Outfit', 'Noto Sans JP', sans-serif;
     color: var(--text-color);
-    text-rendering: optimizeLegibility; /* 文字を綺麗にする！！ */
+    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
 }
 
 #game-wrapper {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    /* 究極のコンソール比率(16:9)を維持！！ */
+    aspect-ratio: 16 / 9;
+    /* 画面の縦横どちらが狭くてもピッタリ収まる魔法の計算 */
+    width: min(100vw, calc(100vh * 16 / 9));
+    height: min(100vh, calc(100vw * 9 / 16));
     background: #000;
     overflow: hidden;
+    box-shadow: 0 0 50px rgba(0,0,0,0.9);
+    border-radius: 12px;
+    border: 2px solid #333;
 }
 
 #game-container {
@@ -321,8 +333,8 @@ body {
             display: grid !important;
             grid-template-columns: 40% 60% !important; /* 黄金比の2カラム構成！！ */
             grid-template-rows: 60px 1fr !important;
-            width: 100vw !important;
-            height: 100vh !important;
+            width: 100% !important;
+            height: 100% !important;
             padding: 10px 20px !important;
             gap: 10px !important;
             box-sizing: border-box;

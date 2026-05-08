@@ -1241,10 +1241,10 @@ function initGame() {
         type: Phaser.AUTO, // WebGL優先で高画質に！！
         parent: 'game-container',
         scale: {
-            mode: Phaser.Scale.FIT, // スマホの画面に完璧に合わせる
+            mode: Phaser.Scale.FIT, // どんな画面でも比率を維持してフィット！！
             autoCenter: Phaser.Scale.CENTER_BOTH,
-            width: window.innerWidth * window.devicePixelRatio,
-            height: window.innerHeight * window.devicePixelRatio,
+            width: 1280, // 完全固定の16:9解像度
+            height: 720, // 完全固定の16:9解像度
         },
         physics: { default: 'arcade', arcade: { gravity: { y: 1400 }, debug: false } },
         render: { 
