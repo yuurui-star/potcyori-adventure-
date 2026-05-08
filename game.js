@@ -109,7 +109,7 @@ function showTitleSplash() {
     const logo = document.getElementById('title-logo');
 
     // タイトル画面が表示された瞬間にBGM再生開始
-    playTitleBGM();
+    if (phaserGame) playTitleBGM();
 
     // ロゴの表示（透過処理済みデータを優先、なければ元の画像）
     if (logo) {
@@ -182,6 +182,10 @@ function showTitleSplash() {
 
 function playTitleBGM() {
     try {
+        if (!phaserGame || !phaserGame.sound) return;
+        // グローバル音量を即反映！！
+        phaserGame.sound.volume = globalVolume;
+        
         const titleBgm = phaserGame.sound.get('bgm_title');
         if (titleBgm) {
             if (!titleBgm.isPlaying) titleBgm.play({ loop: true });
@@ -622,32 +626,32 @@ class WorldMapScene extends Phaser.Scene {
 
         const { width, height } = this.cameras.main;
         if (this.textures.exists('bg_worldmap')) {
-            const bg = this.add.image(width / 2, height / 2, 'bg_worldmap');
-            const scaleX = width / bg.width;
-            bg.setScale(scaleX); // 横幅優先でフィット！！
+            // 背景を1280x720にピッタリ合わせる！！
+            const bg = this.add.image(0, 0, 'bg_worldmap').setOrigin(0, 0);
+            bg.setDisplaySize(width, height);
         } else {
-
             this.add.rectangle(width / 2, height / 2, width, height, 0x1a1a2e);
         }
 
         
-        // BGM再生管理
-        if (!this.sound.get('bgm_map')) {
-            this.sound.play('bgm_map', { loop: true, volume: 0.5 });
-        } else if (!this.sound.get('bgm_map').isPlaying) {
-            this.sound.play('bgm_map', { loop: true, volume: 0.5 });
+        // BGM再生管理（音量反映を徹底！）
+        const mapBgm = this.sound.get('bgm_map');
+        if (!mapBgm) {
+            this.sound.play('bgm_map', { loop: true, volume: globalVolume });
+        } else if (!mapBgm.isPlaying) {
+            mapBgm.play({ loop: true, volume: globalVolume });
         }
+        // 他のBGMを全停止
         for(let i=1; i<=5; i++) { if(this.sound.get(`bgm_stage${i}`)) this.sound.stopByKey(`bgm_stage${i}`); }
+        if (this.sound.get('bgm_title')) this.sound.get('bgm_title').stop();
         
         const graphics = this.add.graphics();
 
         graphics.lineStyle(4, 0xffffff, 0.3);
         MAP_NODES.forEach(node => {
-            // ワイド画面に合わせてノードのX座標をスケーリング (800基準から現在の幅へ)
-            const nodeX = (node.x / 800) * width;
-            const nodeY = (node.y / 600) * height;
-            node.renderX = nodeX; // 描画用座標を保存
-            node.renderY = nodeY;
+            // 座標計算をシンプルに。設定された座標をそのまま使う！！
+            node.renderX = node.x;
+            node.renderY = node.y;
         });
 
         MAP_NODES.forEach(node => {
@@ -683,10 +687,9 @@ class WorldMapScene extends Phaser.Scene {
 
         this.mapPlayer.isMoving = false;
         
-        // カメラ設定: マップ中央にフォーカスし、見切れを防止するぜ！！
+        // カメラ設定: 見切れを完全に防ぐ 1.0倍ズームに固定！！
         this.cameras.main.setBounds(0, 0, width, height);
-        this.cameras.main.centerOn(width / 2, height / 2); // ど真ん中に固定！！
-        this.cameras.main.setZoom(1.25); /* 迫力と全体像を両立させる 1.25倍！！ */
+        this.cameras.main.setZoom(1.0);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -1231,8 +1234,8 @@ function initVolumeControl() {
         slider.addEventListener('input', (e) => {
             globalVolume = parseFloat(e.target.value);
             localStorage.setItem('potcyori_volume', globalVolume);
-            if (window.gameInstance && window.gameInstance.sound) {
-                window.gameInstance.sound.volume = globalVolume;
+            if (phaserGame && phaserGame.sound) {
+                phaserGame.sound.volume = globalVolume;
             }
         });
     }
