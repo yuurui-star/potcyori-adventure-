@@ -666,18 +666,21 @@ class WorldMapScene extends Phaser.Scene {
             const container = this.add.container(node.renderX, node.renderY);
             const bagKey = node.bag;
             const bag = this.add.image(0, 0, this.textures.exists(bagKey) ? bagKey : 'block').setDisplaySize(60, 80);
-            // 文字のぼやけ（ガビガビ）を解消する「高解像度レンダリング技法」！！
-            // 内部的に2倍のサイズ（32px）で超綺麗に描画してから、画面上で半分（16px）に縮小するぜ！
-            const label = this.add.text(0, 50, node.label, { 
-                font: 'bold 32px Noto Sans JP', // 16px → 32px に倍増
-                fill: '#ffffff',
-                stroke: '#000000',
-                strokeThickness: 8, // フチドリも倍増
-                shadow: { offsetX: 4, offsetY: 4, color: '#000000', blur: 4, stroke: true, fill: true }, // 影も倍増
-                resolution: window.devicePixelRatio || 2 // ブラウザのピクセル密度に強制適応！！
-            }).setOrigin(0.5).setScale(0.5); // 最後に 0.5 倍にキュッと縮めることで、最強のクッキリ文字になる！！
+            
+            // HTMLオーバーレイにステージ名を追加するぜ！！
+            // キャンバス描画を完全に廃止し、ブラウザのネイティブフォント描画を使うことで「絶対ぼやけない文字」を実現！！
+            const labelContainer = document.getElementById('wm-labels-container');
+            if (labelContainer) {
+                const labelDiv = document.createElement('div');
+                labelDiv.className = 'wm-stage-label';
+                labelDiv.innerText = node.label;
+                // %で位置を指定することで、画面が伸縮してもキャンバス上のノードの位置に完璧に追従するぜ！！
+                labelDiv.style.left = `${(node.renderX / width) * 100}%`;
+                labelDiv.style.top = `${(node.renderY / height) * 100}%`;
+                labelContainer.appendChild(labelDiv);
+            }
 
-            container.add([bag, label]);
+            container.add([bag]);
             const progress = stageProgress[node.id];
             if (progress.perfect) { bag.setTint(0xffffff).setAlpha(1.0); }
             else if (progress.cleared) { bag.setTint(0x888888).setAlpha(0.8); }
@@ -799,6 +802,10 @@ class PlayScene extends Phaser.Scene {
         document.getElementById('wm-ui').classList.add('hidden'); // マップUIは隠す
         document.getElementById('hud').classList.remove('hidden');
         document.getElementById('mobile-controls').classList.remove('hidden');
+        
+        // ワールドマップのHTMLラベルを確実にクリアするぜ！
+        const labelContainer = document.getElementById('wm-labels-container');
+        if (labelContainer) labelContainer.innerHTML = '';
 
         // TAモードならタイマーを確実に表示！！
         const taPanel = document.getElementById('ta-timer-panel');
@@ -983,10 +990,15 @@ class PlayScene extends Phaser.Scene {
             // 解像度固定に伴い、ズームも安定の1.25倍に固定！！
             this.cameras.main.setZoom(1.25);
 
-            // 垂直方向の追従をロックする裏技だぜ！！
+            // 垂直方向の追従ロック ＆ 当たり判定の超安定化裏技だぜ！！
             this.events.on('update', () => {
                 // カメラのY座標を、常に一定（プレイヤーの初期高度付近）に固定し続ける
                 this.cameras.main.scrollY = Math.max(0, Math.min(this.cameras.main.scrollY, 200)); 
+                
+                // 【超重要】アニメーションで画像サイズが変わっても、当たり判定を絶対にズラさない！！
+                if (this.player && this.player.body) {
+                    this.player.body.setOffset((this.player.width - 28) / 2, this.player.height - 65);
+                }
             });
         }
 
