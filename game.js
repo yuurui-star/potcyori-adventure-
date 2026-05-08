@@ -966,16 +966,21 @@ class PlayScene extends Phaser.Scene {
         this.chipsTotal = this.chips.getChildren().length;
         document.getElementById('total-chips').innerText = this.chipsTotal;
         if (this.player) {
-            // Phaserのカメラオフセットは「注視点をどこにするか」です。
-            // プレイヤーより150px「下」を注視することで、プレイヤーは画面の「上」に押し上げられ、ボタンと被らなくなります。
-            this.cameras.main.startFollow(this.player, true, 0.1, 0.1, 0, 150);
+            // 【革命】カメラの高さを固定し、横方向（X軸）のみ追従するぜ！！
+            // これでプレイヤーがジャンプしても足元が見失われることはない！！
+            this.cameras.main.startFollow(this.player, true, 0.1, 0.1, 0, 100);
             
-            // 高解像度対応に伴い、ズームを1.25倍に引き上げて、ちょりの勇姿をハッキリ見せるぜ！！
-            const zoomLevel = window.innerWidth < 850 ? 1.25 : 1.5;
-            this.cameras.main.setZoom(zoomLevel);
+            // 固定高さ：地面が画面の下から1/3くらいの良い位置に来るように設定
+            this.cameras.main.setFollowOffset(0, 150);
             
-            // 開始直後のカメラ位置を強制的にプレイヤーに合わせる（左端待機を廃止！！）
-            this.cameras.main.centerOn(this.player.x, this.player.y + 150);
+            // 解像度固定に伴い、ズームも安定の1.25倍に固定！！
+            this.cameras.main.setZoom(1.25);
+
+            // 垂直方向の追従をロックする裏技だぜ！！
+            this.events.on('update', () => {
+                // カメラのY座標を、常に一定（プレイヤーの初期高度付近）に固定し続ける
+                this.cameras.main.scrollY = Math.max(0, Math.min(this.cameras.main.scrollY, 200)); 
+            });
         }
 
         this.physics.add.collider(this.player, this.platforms, (p, obj) => {
@@ -1238,18 +1243,18 @@ document.addEventListener('DOMContentLoaded', initVolumeControl);
 function initGame() {
     if (phaserGame) return;
     const config = {
-        type: Phaser.AUTO, // WebGL優先で高画質に！！
+        type: Phaser.AUTO,
         parent: 'game-container',
         scale: {
-            mode: Phaser.Scale.FIT, // どんな画面でも比率を維持してフィット！！
+            mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH,
-            width: 1280, // 完全固定の16:9解像度
-            height: 720, // 完全固定の16:9解像度
+            width: 1280,
+            height: 720,
         },
         physics: { default: 'arcade', arcade: { gravity: { y: 1400 }, debug: false } },
         render: { 
-            pixelArt: true, // キャラはドットを活かす！！
-            antialias: true, // 文字の歪みを防ぐ！！
+            pixelArt: true,
+            antialias: false, // PCの大画面でドットをクッキリさせるぜ！！
             roundPixels: true 
         },
         scene: [BootScene, WorldMapScene, PlayScene]
