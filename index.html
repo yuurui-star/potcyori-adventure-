@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PotCyoriAdventure</title>
     <link rel="icon" href="assets/favicon.png" type="image/png">
-    <link rel="stylesheet" href="style.css?v=20240504_volume_control_final">
+    <link rel="stylesheet" href="style.css?v=20240508_mobile_first_revision">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
     <script src="map_data.js"></script>
@@ -74,9 +74,12 @@
                 <div class="package-container">
                     <img id="completed-package" src="" alt="Completed Package">
                 </div>
-                <p id="clear-message">伝説のパッケージが完成したわ！</p>
-                <div class="btn-group">
-                    <button id="next-stage-btn">次のステージへ</button>
+                <div class="clear-message-area">
+                    <p id="clear-message">伝説のパッケージが完成したわ！</p>
+                    <div id="total-ta-time" class="ta-time-result hidden"></div>
+                    <div class="btn-group">
+                        <button id="next-stage-btn">次のステージへ</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -145,6 +148,6 @@
 
 
 
-    <script src="game.js?v=20240504_volume_control_final"></script>
+    <script src="game.js?v=20240508_mobile_first_revision"></script>
 </body>
 </html>

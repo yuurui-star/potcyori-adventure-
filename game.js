@@ -279,20 +279,11 @@ function showClearScreen(bagKey, scene) {
     overlay.classList.remove('hidden');
     
     const taPanel = document.getElementById('total-ta-time');
-    const msg = document.getElementById('clear-message');
     if (isTimeAttack && currentStageId === "stage5") {
         const timeStr = formatTime(taElapsedTime);
-        if (!taPanel) {
-            const timeEl = document.createElement('div');
-            timeEl.id = 'total-ta-time';
-            timeEl.className = 'ta-time-result'; // クラスを付けてCSSで制御！！
-            timeEl.innerText = `TOTAL TIME: ${timeStr}`;
-            msg.parentNode.insertBefore(timeEl, msg.nextSibling);
-        } else {
-            taPanel.innerText = `TOTAL TIME: ${timeStr}`;
-            taPanel.classList.remove('hidden');
-        }
-    } else if (taPanel) {
+        taPanel.innerText = `TOTAL TIME: ${timeStr}`;
+        taPanel.classList.remove('hidden');
+    } else {
         taPanel.classList.add('hidden');
     }
 
@@ -975,15 +966,16 @@ class PlayScene extends Phaser.Scene {
         this.chipsTotal = this.chips.getChildren().length;
         document.getElementById('total-chips').innerText = this.chipsTotal;
         if (this.player) {
-            // ステージ開始時からプレイヤーを画面中央（かつボタンを避ける高さ）に固定するぜ！！
-            this.cameras.main.startFollow(this.player, true, 0.1, 0.1, 0, -100);
+            // Phaserのカメラオフセットは「注視点をどこにするか」です。
+            // プレイヤーより150px「下」を注視することで、プレイヤーは画面の「上」に押し上げられ、ボタンと被らなくなります。
+            this.cameras.main.startFollow(this.player, true, 0.1, 0.1, 0, 150);
             
             // 高解像度対応に伴い、ズームを1.25倍に引き上げて、ちょりの勇姿をハッキリ見せるぜ！！
             const zoomLevel = window.innerWidth < 850 ? 1.25 : 1.5;
             this.cameras.main.setZoom(zoomLevel);
             
             // 開始直後のカメラ位置を強制的にプレイヤーに合わせる（左端待機を廃止！！）
-            this.cameras.main.centerOn(this.player.x, this.player.y - 100);
+            this.cameras.main.centerOn(this.player.x, this.player.y + 150);
         }
 
         this.physics.add.collider(this.player, this.platforms, (p, obj) => {
