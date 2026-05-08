@@ -930,7 +930,8 @@ class PlayScene extends Phaser.Scene {
                     e._groundRow = rowIndex + 1;
                 } else if (char === 'P') {
                     if (!this.player) {
-                        this.player = this.physics.add.sprite(x + 36, y + 36, 'cyori_0');
+                        // 足元を基準（Origin: 0.5, 1）にすることで、アニメーションによるガタつきや壁抜けを防止するぜ！！
+                        this.player = this.physics.add.sprite(x + 18, y + 36, 'cyori_0').setOrigin(0.5, 1);
                         this.player.setDisplaySize(65, 75);
                         if (!this.anims.exists('walk')) {
                             this.anims.create({ key: 'idle', frames: [{ key: 'cyori_0' }, { key: 'cyori_1' }, { key: 'cyori_2' }, { key: 'cyori_3' }], frameRate: 4, repeat: -1 });
@@ -939,10 +940,10 @@ class PlayScene extends Phaser.Scene {
                             this.anims.create({ key: 'fall', frames: [{ key: 'cyori_10' }, { key: 'cyori_11' }], frameRate: 8 });
                         }
                         this.player.play('idle');
-                        const bW = this.player.width * 0.55;
-                        const bH = this.player.height * 0.95;
-                        this.player.body.setSize(bW, bH);
-                        this.player.body.setOffset((this.player.width - bW) / 2, this.player.height - bH);
+                        // 判定の幅をブロック(36px)より少し細く(28px)し、高さを固定して、絶対に変動しない鋼のボディを作るぜ！！
+                        // 割合計算をやめることで、フレームごとのサイズ変化による壁めり込みを完全に防ぐ！
+                        this.player.body.setSize(28, 65);
+                        this.player.body.setOffset((this.player.width - 28) / 2, this.player.height - 65);
                     }
                 } else if (char === 'Z') {
                     this.boss = this.physics.add.sprite(x + 18, y, 'yuno');
