@@ -20,7 +20,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100dvh; /* アドレスバー領域を考慮した究極の高さ指定！！ */
     width: 100vw;
     font-family: 'Outfit', 'Noto Sans JP', sans-serif;
     color: var(--text-color);
@@ -32,11 +32,11 @@ body {
 
 #game-wrapper {
     position: relative;
-    /* 究極のコンソール比率(16:9)を維持！！ */
-    aspect-ratio: 16 / 9;
+    /* 究極のレトロコンソール比率(4:3)に変更し、余白を確保！！ */
+    aspect-ratio: 4 / 3;
     /* 画面の縦横どちらが狭くてもピッタリ収まる魔法の計算 */
-    width: min(100vw, calc(100vh * 16 / 9));
-    height: min(100vh, calc(100vw * 9 / 16));
+    width: min(100vw, calc(100dvh * 4 / 3));
+    height: min(100dvh, calc(100vw * 3 / 4));
     background: #000;
     overflow: hidden;
     box-shadow: 0 0 50px rgba(0,0,0,0.9);
@@ -178,24 +178,27 @@ body {
     50% { transform: translateY(-5px); }
 }
 
-/* モバイル用コントロール */
+/* モバイル用コントロール（ゲーム画面の外、ドット柄のベゼル部分に配置！！） */
 #mobile-controls {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100dvh; /* 画面全体を覆う */
     display: flex;
     justify-content: space-between;
-    pointer-events: none;
-    z-index: 10;
+    align-items: flex-end; /* 下に寄せる */
+    padding: 20px 10px; /* 画面端からの距離 */
+    pointer-events: none; /* ボタン以外は触れるようにする */
+    z-index: 1000; /* 最前面に！！ */
+    box-sizing: border-box;
 }
-
-
 
 .control-group {
     display: flex;
-    gap: 15px;
-    pointer-events: auto;
+    gap: 10px;
+    pointer-events: auto; /* ここだけタッチ可能に */
+    margin-bottom: env(safe-area-inset-bottom, 20px); /* iPhone等の下のバーを避ける */
 }
 
 .m-btn {
@@ -353,7 +356,7 @@ body {
             grid-row: 2;
             width: 100% !important;
             height: auto !important;
-            max-height: 70vh !important;
+            max-height: 70% !important; /* vhから%に変更！コンテナ内でのはみ出しを防止！ */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -540,16 +543,24 @@ body {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    box-sizing: border-box;
+    padding: 20px; /* 余白を追加して内容が端に張り付かないようにする */
 }
 
 .title-container {
     text-align: center;
     animation: fadeIn 1s ease-out;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #title-logo {
     max-width: 80%;
-    max-height: 40vh;
+    max-height: 40%; /* vhではなく%を使うことで、コンテナ比率が変わってもはみ出さない！ */
     filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.6));
     margin-bottom: 1rem;
     animation: titleFloat 3s infinite ease-in-out;

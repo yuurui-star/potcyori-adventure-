@@ -626,9 +626,10 @@ class WorldMapScene extends Phaser.Scene {
 
         const { width, height } = this.cameras.main;
         if (this.textures.exists('bg_worldmap')) {
-            // 背景を1280x720にピッタリ合わせる！！
-            const bg = this.add.image(0, 0, 'bg_worldmap').setOrigin(0, 0);
-            bg.setDisplaySize(width, height);
+            // 背景を4:3比率でも綺麗に見えるように、アスペクト比を維持して画面を覆うように拡大！！
+            const bg = this.add.image(width / 2, height / 2, 'bg_worldmap').setOrigin(0.5, 0.5);
+            const scale = Math.max(width / bg.width, height / bg.height);
+            bg.setScale(scale);
         } else {
             this.add.rectangle(width / 2, height / 2, width, height, 0x1a1a2e);
         }
@@ -950,10 +951,13 @@ class PlayScene extends Phaser.Scene {
                             this.anims.create({ key: 'fall', frames: [{ key: 'cyori_10' }, { key: 'cyori_11' }], frameRate: 8 });
                         }
                         this.player.play('idle');
-                        // 判定の幅をブロック(36px)より少し細く(28px)し、高さを固定して、絶対に変動しない鋼のボディを作るぜ！！
-                        // 割合計算をやめることで、フレームごとのサイズ変化による壁めり込みを完全に防ぐ！
-                        this.player.body.setSize(28, 65);
-                        this.player.body.setOffset((this.player.width - 28) / 2, this.player.height - 65);
+                        
+                        // 【超重要】表示サイズをスケール変更した場合、物理エンジンには「スケール前の元の解像度」で
+                        // サイズを指定しないと判定が極小になってしまう！！
+                        const unscaledW = 28 / this.player.scaleX;
+                        const unscaledH = 65 / this.player.scaleY;
+                        this.player.body.setSize(unscaledW, unscaledH, false);
+                        this.player.body.setOffset((this.player.width - unscaledW) / 2, this.player.height - unscaledH);
                     }
                 } else if (char === 'Z') {
                     this.boss = this.physics.add.sprite(x + 18, y, 'yuno');
@@ -996,8 +1000,11 @@ class PlayScene extends Phaser.Scene {
                 this.cameras.main.scrollY = Math.max(0, Math.min(this.cameras.main.scrollY, 200)); 
                 
                 // 【超重要】アニメーションで画像サイズが変わっても、当たり判定を絶対にズラさない！！
+                // さらに、スケールを考慮した「アンスケールサイズ」でオフセットを計算する！！
                 if (this.player && this.player.body) {
-                    this.player.body.setOffset((this.player.width - 28) / 2, this.player.height - 65);
+                    const unscaledW = 28 / this.player.scaleX;
+                    const unscaledH = 65 / this.player.scaleY;
+                    this.player.body.setOffset((this.player.width - unscaledW) / 2, this.player.height - unscaledH);
                 }
             });
         }
@@ -1267,7 +1274,7 @@ function initGame() {
         scale: {
             mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH,
-            width: 1280,
+            width: 960, // 究極のレトロコンソール比率「4:3」に変更！！
             height: 720,
         },
         physics: { default: 'arcade', arcade: { gravity: { y: 1400 }, debug: false } },

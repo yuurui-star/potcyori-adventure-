@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PotCyoriAdventure</title>
     <link rel="icon" href="assets/favicon.png" type="image/png">
-    <link rel="stylesheet" href="style.css?v=20240508_ui_and_physics_fixed">
+    <link rel="stylesheet" href="style.css?v=20240508_retro_console_update">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
     <script src="map_data.js"></script>
@@ -128,17 +128,6 @@
             </div>
         </div>
 
-        <!-- モバイル用コントロール -->
-        <div id="mobile-controls">
-            <div class="control-group left-controls">
-                <button id="btn-left" class="m-btn">◀</button>
-                <button id="btn-right" class="m-btn">▶</button>
-            </div>
-            <div class="control-group right-controls">
-                <button id="btn-dash" class="m-btn secondary">DASH</button>
-                <button id="btn-jump" class="m-btn">JUMP</button>
-            </div>
-        </div>
         <!-- ワールドマップ専用UI (HTML) -->
         <div id="wm-ui" class="hidden">
             <h1 id="wm-title">WORLD MAP</h1>
@@ -150,6 +139,18 @@
 
 
 
-    <script src="game.js?v=20240508_ui_and_physics_fixed"></script>
+    <!-- モバイル用コントロール（ゲーム画面の外側に配置！！） -->
+    <div id="mobile-controls">
+        <div class="control-group left-controls">
+            <button id="btn-left" class="m-btn">◀</button>
+            <button id="btn-right" class="m-btn">▶</button>
+        </div>
+        <div class="control-group right-controls">
+            <button id="btn-dash" class="m-btn secondary">DASH</button>
+            <button id="btn-jump" class="m-btn">JUMP</button>
+        </div>
+    </div>
+
+    <script src="game.js?v=20240508_retro_console_update"></script>
 </body>
 </html>
