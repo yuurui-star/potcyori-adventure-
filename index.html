@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PotCyoriAdventure</title>
     <link rel="icon" href="assets/favicon.png" type="image/png">
-    <link rel="stylesheet" href="style.css?v=20240508_retro_console_update">
+    <link rel="stylesheet" href="style.css?v=20240509_perfect_responsive">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
     <script src="map_data.js"></script>
@@ -151,6 +151,35 @@
         </div>
     </div>
 
-    <script src="game.js?v=20240508_retro_console_update"></script>
+    <script src="game.js?v=20240509_perfect_responsive"></script>
+
+    <!-- 究極のレスポンシブ・スケーリング・スクリプト！！ -->
+    <!-- これでスマホでもPCでも、UIのサイズ比率が「絶対に崩れない」最強のレイアウトになるぜ！！ -->
+    <script>
+        function resizeGameWrapper() {
+            const wrapper = document.getElementById('game-wrapper');
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            // ゲーム画面自体の絶対的な固定サイズ (4:3)
+            const wrapperWidth = 960;
+            const wrapperHeight = 720;
+            
+            // 画面に収まるギリギリの倍率を計算！
+            // ※スマホの時は上下左右に少し余裕（ベゼル）を持たせるために 0.98 などを掛けてもOK
+            const scaleX = windowWidth / wrapperWidth;
+            const scaleY = windowHeight / wrapperHeight;
+            const scale = Math.min(scaleX, scaleY);
+            
+            // CSSのtransformを使って、画面全体（CanvasもHTML UIも全部）を美しくズームさせるぜ！！
+            wrapper.style.transform = `scale(${scale})`;
+        }
+        
+        // 画面サイズが変わるたびに再計算！
+        window.addEventListener('resize', resizeGameWrapper);
+        window.addEventListener('DOMContentLoaded', resizeGameWrapper);
+        // スマホの回転時にも対応！
+        window.addEventListener('orientationchange', () => setTimeout(resizeGameWrapper, 100));
+    </script>
 </body>
 </html>

@@ -32,11 +32,11 @@ body {
 
 #game-wrapper {
     position: relative;
-    /* 究極のレトロコンソール比率(4:3)に変更し、余白を確保！！ */
-    aspect-ratio: 4 / 3;
-    /* 画面の縦横どちらが狭くてもピッタリ収まる魔法の計算 */
-    width: min(100vw, calc(100dvh * 4 / 3));
-    height: min(100dvh, calc(100vw * 3 / 4));
+    /* 究極のレトロコンソールサイズ (4:3) で固定！！ */
+    width: 960px;
+    height: 720px;
+    /* JSからのtransformスケールの基準点 */
+    transform-origin: center;
     background: #000;
     overflow: hidden;
     box-shadow: 0 0 50px rgba(0,0,0,0.9);
@@ -59,6 +59,9 @@ body {
     max-width: 100vw;
     max-height: 100vh;
     object-fit: contain;
+    /* 縮小表示した時にドットが不均等に潰れる「ガビガビ」を防ぐ！！ */
+    /* 内部のドット絵はクッキリのまま、画面へのスケーリングだけを滑らかにする魔法！ */
+    image-rendering: auto !important;
 }
 
 
@@ -204,6 +207,7 @@ body {
 .m-btn {
     width: 65px;
     height: 65px;
+    flex-shrink: 0; /* フレックスボックスによって楕円形に潰されるのを防ぐぜ！！ */
     background: rgba(233, 69, 96, 0.6);
     backdrop-filter: blur(5px);
     border: 2px solid #e94560;
@@ -271,172 +275,44 @@ body {
     border: 1px solid rgba(255,255,255,0.2);
 }
 
-@media screen and (max-width: 850px) {
-    /* スマホ時はガイドを消してスッキリさせるぜ！！ */
-    #wm-guide {
-        display: none !important;
-    }
-    
-    #wm-title {
-        font-size: 2rem;
-        margin-top: -20px;
-    }
 
-    /* ダイアログをスリムにして後ろを透かす！！ */
-    #dialogue-container {
-        top: 45px; /* さらに上に！！ */
-        padding: 5px 20px; /* 極限スリム化 */
-        background: rgba(22, 33, 62, 0.7);
-        width: auto;
-        max-width: 90%; /* スマホ時は少し広めに！！ */
-    }
 
-    #dialogue-text {
-        font-size: 0.9rem;
-        min-height: 2em; /* 高さを抑える！！ */
-    }
 
-    .character-name {
-        top: -12px;
-        padding: 1px 10px;
-        font-size: 0.8rem;
-    }
-
-    /* HUDも小型化して邪魔しないようにする */
-    .hud-item {
-        padding: 5px 12px;
-        font-size: 0.85rem;
-    }
-    
-    #hud {
-        top: 10px;
-        left: 10px;
-        right: 10px;
-    }
-
-    /* コントローラーをもっと透けさせる！！ */
-    .m-btn {
-        width: 55px;
-        height: 55px;
-        background: rgba(233, 69, 96, 0.4);
-        border-width: 1px;
-        font-size: 18px;
-    }
-    
-    .m-btn.secondary {
-        width: 55px;
-        height: 55px;
-        font-size: 11px;
-    }
-
-    /* 横画面(Landscape)の時の大革命レイアウト！！ */
-    /* 横画面(Landscape)の時の究極マスターレイアウト！！ */
-    @media (orientation: landscape) {
-        .kamishibai-content, .clear-content {
-            display: grid !important;
-            grid-template-columns: 40% 60% !important; /* 黄金比の2カラム構成！！ */
-            grid-template-rows: 60px 1fr !important;
-            width: 100% !important;
-            height: 100% !important;
-            padding: 10px 20px !important;
-            gap: 10px !important;
-            box-sizing: border-box;
-        }
-
-        .glow-text {
-            grid-column: 1 / span 2;
-            grid-row: 1;
-            font-size: 1.5rem !important;
-            margin: 0 !important;
-            align-self: center;
-        }
-
-        .kamishibai-image-container, .package-container {
-            grid-column: 1;
-            grid-row: 2;
-            width: 100% !important;
-            height: auto !important;
-            max-height: 70% !important; /* vhから%に変更！コンテナ内でのはみ出しを防止！ */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .kamishibai-text-box, .btn-group, .clear-message-area {
-            grid-column: 2;
-            grid-row: 2;
-            width: 100% !important;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: rgba(10, 10, 26, 0.85);
-            padding: 15px !important;
-            border-radius: 15px;
-            border: 2px solid var(--primary);
-        }
-
-        /* タイムアタックタイマーを右側エリアに確実に収容！！ */
-        .ta-time-result {
-            font-size: 1.5rem !important;
-            margin: 5px 0 !important;
-        }
-
-        /* ワールドマップのガイドをスマートに下へ！！ */
-        #wm-ui {
-            padding: 20px 0 !important;
-            justify-content: flex-end !important;
-        }
-        #wm-guide {
-            font-size: 0.9rem !important;
-            padding: 5px 20px !important;
-            margin-bottom: 10px !important;
-        }
-        
-        /* 会話ウィンドウをスリム化！！ */
-        #dialogue-container {
-            top: 20px !important;
-            max-width: 70% !important;
-            padding: 10px 20px !important;
-            z-index: 3000 !important; /* クリア画面より手前に！！ */
-        }
-    }
-
-    /* タイムアタック結果のスタイル！！ */
-    .ta-time-result {
-        font-family: 'Outfit', sans-serif;
-        font-size: 2rem;
-        color: #00f2fe; /* サイバーな青！！ */
-        text-shadow: 0 0 15px rgba(0, 242, 254, 0.8);
-        margin: 15px 0;
-        font-weight: bold;
-    }
-
-    /* クリア画面のパッケージを小さくしてボタンを救出するぜ！！ */
-    .package-container {
-        width: 140px;
-        height: 180px;
-        margin: 5px auto;
-    }
-
-    .glow-text {
-        font-size: 1.8rem;
-    }
-
-    #clear-message {
-        font-size: 0.9rem;
-        margin: 5px 0;
-    }
-
-    .btn-group {
-        margin-top: 10px;
-    }
-
-    button {
-        padding: 8px 25px;
-        font-size: 1rem;
-    }
+/* タイムアタック結果のスタイル！！ */
+.ta-time-result {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2rem;
+    color: #00f2fe; /* サイバーな青！！ */
+    text-shadow: 0 0 15px rgba(0, 242, 254, 0.8);
+    margin: 15px 0;
+    font-weight: bold;
 }
+
+/* クリア画面のパッケージを小さくしてボタンを救出するぜ！！ */
+.package-container {
+    width: 140px;
+    height: 180px;
+    margin: 5px auto;
+}
+
+.glow-text {
+    font-size: 1.8rem;
+}
+
+#clear-message {
+    font-size: 0.9rem;
+    margin: 5px 0;
+}
+
+.btn-group {
+    margin-top: 10px;
+}
+
+button {
+    padding: 8px 25px;
+    font-size: 1rem;
+}
+
 
 
 /* ポーズオーバーレイ */
