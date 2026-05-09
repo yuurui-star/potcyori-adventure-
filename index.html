@@ -165,14 +165,18 @@
             const wrapperWidth = 960;
             const wrapperHeight = 720;
             
-            // 画面に収まるギリギリの倍率を計算！
-            // ※スマホの時は上下左右に少し余裕（ベゼル）を持たせるために 0.98 などを掛けてもOK
+            // 画面に収まるギリギリの倍率を計算（画面のフチに少しだけ余白を残すために 0.99 を掛ける！）
             const scaleX = windowWidth / wrapperWidth;
             const scaleY = windowHeight / wrapperHeight;
-            const scale = Math.min(scaleX, scaleY);
+            const scale = Math.min(scaleX, scaleY) * 0.99;
             
-            // CSSのtransformを使って、画面全体（CanvasもHTML UIも全部）を美しくズームさせるぜ！！
-            wrapper.style.transform = `scale(${scale})`;
+            // Flexboxのバグ（画面が狭いと上が固定されて下が見切れる）を回避するため、
+            // 余ったスペースを2で割って完璧な中央座標（ピクセル単位）を算出する！！
+            const offsetX = (windowWidth - (wrapperWidth * scale)) / 2;
+            const offsetY = (windowHeight - (wrapperHeight * scale)) / 2;
+            
+            // 左上(0,0)を基準にして、ズームしつつ中央へスライドさせる！！（これが見切れを絶対に起こさない最強の配置術！）
+            wrapper.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
         }
         
         // 画面サイズが変わるたびに再計算！
